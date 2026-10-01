@@ -1,92 +1,135 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ISITLEGIT? V3</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Free browser-based risk signal checker for suspicious messages, jobs, rentals, shops and investments.">
+<meta name="theme-color" content="#080b10">
+<title>ISITLEGIT? V4 — Risk Signal Checker</title>
 <style>
-body{margin:0;background:#07090d;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-.wrap{max-width:900px;margin:auto;padding:22px}.logo{font-weight:900;font-size:22px}.logo span{color:#7c5cff}
-.hero{text-align:center;padding:40px 0}.eyebrow{color:#b7aaff;font-weight:800;font-size:12px;letter-spacing:.13em}
-h1{font-size:clamp(44px,8vw,78px);line-height:.95;letter-spacing:-.05em;margin:16px 0}
-.sub{color:#8d96a6;font-size:18px;line-height:1.5}.box{margin:28px auto;background:#10141c;border:1px solid #222938;border-radius:22px;padding:16px;max-width:760px}
-textarea{width:100%;min-height:170px;background:#0a0d13;color:#f5f7fb;border:1px solid #2b3241;border-radius:15px;padding:16px;font:inherit;box-sizing:border-box}
-.row{display:flex;gap:10px;margin-top:12px}.btn{padding:14px 18px;border:0;border-radius:13px;font-weight:800;font-size:15px}.primary{background:#7c5cff;color:white;flex:1}.secondary{background:#171c26;color:#fff;border:1px solid #222938}
-.result{display:none;text-align:left;border-top:1px solid #222938;margin-top:18px;padding-top:18px}.risk{font-size:24px;font-weight:900}.note{color:#8d96a6;margin-top:4px;line-height:1.45}
-.meter{height:10px;background:#171c26;border-radius:99px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:#0b0f16;border:1px solid #222938;border-radius:15px;padding:15px}
-.card h3{margin:0 0 10px}.card ul{padding-left:18px}.card li{margin:8px 0;line-height:1.4}.small{color:#8d96a6;font-size:13px}
-.badge{display:inline-block;border:1px solid #222938;border-radius:99px;padding:5px 8px;margin:3px;font-size:11px}
-footer{text-align:center;color:#70798a;font-size:12px;padding:30px 0}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+:root{--bg:#070a0f;--panel:#10151e;--panel2:#0b1017;--line:#273040;--txt:#f5f7fb;--muted:#929bad;--purple:#7957ff;--red:#ff5b70;--amber:#ffb020;--green:#19d3a2}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -12%,#211a3d 0,#070a0f 42%);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:980px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.logo{font-size:22px;font-weight:950}.logo b{color:var(--purple)}
+.langs{display:flex;gap:5px}.lang{border:1px solid var(--line);background:#111722;color:#cbd2df;border-radius:10px;padding:8px 9px;font-weight:800;cursor:pointer}.lang.active{background:var(--purple);color:#fff}
+.hero{text-align:center;padding:50px 0 25px}.eyebrow{font-size:12px;letter-spacing:.14em;font-weight:950;color:#b9aaff}.hero h1{font-size:clamp(43px,8vw,78px);line-height:.95;letter-spacing:-.055em;margin:15px 0}.lead{max-width:720px;margin:auto;color:var(--muted);font-size:18px;line-height:1.55}
+.checker{max-width:810px;margin:30px auto;background:rgba(16,21,30,.96);border:1px solid var(--line);border-radius:23px;padding:16px;box-shadow:0 30px 80px #0007;text-align:left}
+textarea{width:100%;min-height:180px;border:1px solid #2a3445;background:#080c12;color:#fff;border-radius:15px;padding:17px;font:inherit;font-size:16px;resize:vertical;outline:none}textarea:focus{border-color:#7159e8}
+.actions{display:flex;gap:9px;margin-top:11px}.btn{border:0;border-radius:12px;padding:14px 16px;font-size:14px;font-weight:900;cursor:pointer}.primary{background:var(--purple);color:#fff;flex:1}.secondary{background:#171d28;color:#fff;border:1px solid var(--line)}
+.demos{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.demo{border:1px solid var(--line);background:#111722;color:#c7cfdd;border-radius:99px;padding:7px 10px;font-size:12px;cursor:pointer}
+.result{display:none;border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.headline{font-size:25px;font-weight:950}.summary{color:var(--muted);margin-top:5px;line-height:1.5}.meter{height:10px;background:#1b2230;border-radius:99px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0;transition:.35s}
+.tags{margin-bottom:10px}.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:5px 9px;margin:2px;font-size:11px;color:#d8deea}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:16px}.card h3{margin:0 0 10px}.card ul{padding-left:19px;margin:0}.card li{margin:9px 0;line-height:1.45}.match{font-size:12px;color:var(--muted)}.copyrow{margin-top:12px}.note{font-size:12px;color:#7f899b;line-height:1.5;margin-top:13px}
+.features{max-width:810px;margin:0 auto 50px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.feature{border:1px solid var(--line);background:#0d121a;border-radius:15px;padding:17px;text-align:center}.feature b{display:block;font-size:18px}.feature span{color:var(--muted);font-size:12px}
+footer{text-align:center;border-top:1px solid var(--line);padding:24px;color:#727d90;font-size:12px}.toast{display:none;position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#fff;color:#080a0e;padding:10px 14px;border-radius:10px;font-weight:900;font-size:13px}
+@media(max-width:700px){.wrap{padding:18px}.top{align-items:flex-start}.hero{padding-top:42px}.grid,.features{grid-template-columns:1fr}.actions{flex-wrap:wrap}.secondary{flex:1}.langs{gap:3px}.lang{padding:7px;font-size:12px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="logo">ISIT<span>LEGIT</span>?</div>
+<header class="top"><div class="logo">ISIT<b>LEGIT</b>?</div><div class="langs"><button class="lang active" data-lang="en">EN</button><button class="lang" data-lang="it">IT</button><button class="lang" data-lang="ro">RO</button></div></header>
 <section class="hero">
-<div class="eyebrow">DON'T GET SCAMMED</div>
-<h1>Before you pay.<br>Before you click.</h1>
-<p class="sub">Paste a suspicious message, rental, job offer, seller text or website copy. V3 screens for common scam patterns and explains what to verify.</p>
-<div class="box">
-<textarea id="input" placeholder="Paste suspicious text here..."></textarea>
-<div class="row"><button class="btn primary" onclick="checkIt()">Check it →</button><button class="btn secondary" onclick="clearAll()">Clear</button></div>
-<div id="result" class="result">
-<div id="risk" class="risk"></div><div id="summary" class="note"></div>
-<div class="meter"><div id="bar" class="bar"></div></div>
-<div id="tags"></div>
-<div class="grid">
-<div class="card"><h3>Signals detected</h3><div id="signals"></div></div>
-<div class="card"><h3>What to do next</h3><div id="actions"></div></div>
-</div>
-<div class="small" style="margin-top:12px">This is a rule-based screening tool, not proof that something is fraudulent or safe. Verify important claims independently.</div>
-</div>
-</div>
+<div class="eyebrow" data-i="eyebrow"></div>
+<h1 data-i="title"></h1>
+<p class="lead" data-i="lead"></p>
+<div class="checker">
+<textarea id="input"></textarea>
+<div class="actions"><button class="btn primary" id="check"></button><button class="btn secondary" id="clear"></button></div>
+<div class="demos"><button class="demo" data-demo="job">💼 <span data-demo-label="job">Job</span></button><button class="demo" data-demo="rental">🏠 <span data-demo-label="rental">Rental</span></button><button class="demo" data-demo="phishing">🔐 <span data-demo-label="phishing">Phishing</span></button><button class="demo" data-demo="investment">📈 <span data-demo-label="investment">Investment</span></button></div>
+<div class="result" id="result">
+<div class="headline" id="risk"></div><div class="summary" id="summary"></div>
+<div class="meter"><div class="bar" id="bar"></div></div><div class="tags" id="tags"></div>
+<div class="grid"><div class="card"><h3 data-i="signals"></h3><div id="signalList"></div></div><div class="card"><h3 data-i="next"></h3><div id="nextList"></div></div></div>
+<div class="copyrow"><button class="btn secondary" id="copy" data-i="copy"></button></div>
+<div class="note" data-i="note"></div>
+</div></div>
 </section>
-<footer>ISITLEGIT? — V3 prototype · No API · No cost</footer>
-</div>
+<section class="features"><div class="feature"><b>0 €</b><span data-i="free"></span></div><div class="feature"><b>Local</b><span data-i="local"></span></div><div class="feature"><b>V4</b><span data-i="engine"></span></div></section>
+<footer>ISITLEGIT? · V4 prototype · Rule-based screening · No API</footer>
+</div><div class="toast" id="toast"></div>
 <script>
+const UI={
+en:{eyebrow:"DON'T GET SCAMMED",title:"Before you pay.<br>Before you click.",lead:"Paste a suspicious message, rental, job offer, seller text or website copy. V4 screens for common risk signals and explains what to verify.",placeholder:"Paste suspicious text here…",check:"Check it →",clear:"Clear",signals:"Signals detected",next:"What to verify next",copy:"Copy report",note:"This is a risk-screening tool, not a guarantee. A low score does not prove something is safe, and a high score is not proof of fraud.",free:"free to use",local:"runs in your browser",engine:"expanded risk rules",low:"LOW RISK SIGNALS",medium:"MEDIUM RISK SIGNALS",high:"HIGH RISK SIGNALS",none:"No obvious signals matched the current rules. This does not prove the situation is safe.",detected:n=>`${n} risk signal${n===1?"":"s"} detected.`,copied:"Report copied",matched:"Matched",job:"Job",rental:"Rental",phishing:"Phishing",investment:"Investment"},
+it:{eyebrow:"NON FARTI TRUFFARE",title:"Prima di pagare.<br>Prima di cliccare.",lead:"Incolla un messaggio, affitto, offerta di lavoro, testo di un venditore o sito sospetto. V4 cerca segnali di rischio comuni e spiega cosa verificare.",placeholder:"Incolla qui il testo sospetto…",check:"Controlla →",clear:"Cancella",signals:"Segnali rilevati",next:"Cosa verificare",copy:"Copia rapporto",note:"È uno strumento di screening del rischio, non una garanzia. Un punteggio basso non prova che sia sicuro e uno alto non prova una truffa.",free:"gratis",local:"funziona nel browser",engine:"regole di rischio ampliate",low:"SEGNALI DI RISCHIO BASSI",medium:"SEGNALI DI RISCHIO MEDI",high:"SEGNALI DI RISCHIO ALTI",none:"Nessun segnale evidente corrisponde alle regole attuali. Questo non prova che sia sicuro.",detected:n=>`${n} segnali di rischio rilevati.`,copied:"Rapporto copiato",matched:"Corrispondenza",job:"Lavoro",rental:"Affitto",phishing:"Phishing",investment:"Investimento"},
+ro:{eyebrow:"NU TE LĂSA PĂCĂLIT",title:"Înainte să plătești.<br>Înainte să dai click.",lead:"Lipește un mesaj, anunț de chirie, ofertă de muncă, text de la un vânzător sau site suspect. V4 caută semnale comune de risc și îți spune ce să verifici.",placeholder:"Lipește aici textul suspect…",check:"Verifică →",clear:"Șterge",signals:"Semnale detectate",next:"Ce să verifici",copy:"Copiază raportul",note:"Acesta este un instrument de evaluare a semnalelor de risc, nu o garanție. Un scor mic nu dovedește că este sigur, iar unul mare nu dovedește o fraudă.",free:"gratuit",local:"rulează în browser",engine:"reguli de risc extinse",low:"SEMNALE DE RISC SCĂZUTE",medium:"SEMNALE DE RISC MEDII",high:"SEMNALE DE RISC RIDICATE",none:"Niciun semnal evident nu corespunde regulilor actuale. Asta nu dovedește că situația este sigură.",detected:n=>`${n} semnale de risc detectate.`,copied:"Raport copiat",matched:"Potrivire",job:"Job",rental:"Chirie",phishing:"Phishing",investment:"Investiție"}};
 const RULES=[
-{k:["gift card","steam card","apple gift card","google play card"],p:30,t:"payment",m:"Gift-card payment request",a:"Do not pay with gift cards. Legitimate sellers and employers rarely require them."},
-{k:["bitcoin","crypto","cryptocurrency","usdt","ethereum"],p:20,t:"payment",m:"Crypto payment request",a:"Treat irreversible crypto payments with extra caution. Verify the counterparty independently."},
-{k:["wire transfer","western union","moneygram"],p:22,t:"payment",m:"Hard-to-reverse transfer",a:"Avoid irreversible transfers until identity and legitimacy are independently confirmed."},
-{k:["pay first","payment first","send payment before"],p:22,t:"payment",m:"Payment before verification",a:"Do not pay before you can verify the item, person, property or service."},
-{k:["deposit today","send the deposit","deposit now"],p:18,t:"rental",m:"Deposit pressure",a:"Verify the property, landlord/agent and tenancy documents before sending a deposit."},
-{k:["urgent","act now","immediately","today only","limited time","last chance"],p:10,t:"pressure",m:"Urgency or time pressure",a:"Slow down. Urgency is often used to reduce your verification time."},
-{k:["telegram","signal app"],p:8,t:"contact",m:"Move to private messaging",a:"Keep communication on the original platform when possible."},
-{k:["whatsapp"],p:5,t:"contact",m:"Off-platform messaging",a:"Verify the person or company independently before paying or sharing documents."},
-{k:["password","verification code","security code","otp","one-time password"],p:35,t:"credentials",m:"Credentials or security code requested",a:"Never share passwords or one-time security codes. Use the service's official app/site."},
-{k:["seed phrase","recovery phrase","12 words","24 words"],p:50,t:"credentials",m:"Crypto recovery phrase requested",a:"Never share a wallet seed or recovery phrase."},
-{k:["guaranteed profit","guaranteed return","risk free investment","double your money"],p:35,t:"investment",m:"Guaranteed investment returns",a:"Treat guaranteed or risk-free returns as a major warning sign."},
-{k:["easy money","earn 500 a day","earn $500 a day"],p:22,t:"job",m:"Unrealistic income promise",a:"Check the employer, contract and how compensation actually works."},
-{k:["pay for training","training fee","pay for equipment"],p:25,t:"job",m:"Upfront fee for a job",a:"Legitimate employers generally do not require candidates to pay them to get hired."},
-{k:["landlord abroad","owner is abroad","can't show the apartment","cannot show the apartment"],p:28,t:"rental",m:"Property cannot be viewed",a:"Do not send a deposit before independently verifying the property and responsible party."},
-{k:["friends and family","paypal friends"],p:18,t:"marketplace",m:"Buyer protection may be bypassed",a:"Use protected payment methods for purchases from strangers."},
-{k:["outside the platform","pay off platform"],p:18,t:"marketplace",m:"Platform protections may be bypassed",a:"Stay on the marketplace's official messaging and payment system."},
-{k:["click this link","verify your account","account suspended","account will be closed"],p:16,t:"phishing",m:"Phishing-style account pressure",a:"Do not use links in the message. Open the official app or type the official address yourself."},
-{k:["you won","claim your prize"],p:18,t:"prize",m:"Unexpected prize claim",a:"Do not pay fees or provide sensitive data to claim an unexpected prize."}
+{w:["gift card","steam card","apple gift card","google play card"],p:35,t:"payment",m:"Gift-card payment request",a:"Do not pay a stranger with gift cards. Verify the request independently."},
+{w:["bitcoin","crypto","cryptocurrency","usdt","ethereum"],p:18,t:"crypto",m:"Crypto payment or transfer",a:"Crypto transfers can be hard to reverse. Verify the recipient and purpose independently."},
+{w:["wire transfer","western union","moneygram"],p:24,t:"payment",m:"Hard-to-reverse money transfer",a:"Avoid irreversible transfers until the person or organization is independently verified."},
+{w:["deposit today","deposit now","send the deposit","pay first","payment first"],p:20,t:"payment",m:"Payment before verification",a:"Verify the property, item, service or person before sending money."},
+{w:["urgent","act now","immediately","limited time","last chance","right now"],p:10,t:"pressure",m:"Urgency or time pressure",a:"Slow down and verify the claim using an independent source."},
+{w:["verification code","security code","otp","one-time password","2fa code","password"],p:40,t:"credentials",m:"Password or security code requested",a:"Never share passwords, OTPs or 2FA codes. Open the official service yourself."},
+{w:["seed phrase","recovery phrase","private key"],p:55,t:"credentials",m:"Crypto-wallet secret requested",a:"Never share a seed phrase or private key."},
+{w:["telegram","whatsapp only","contact me on whatsapp"],p:9,t:"contact",m:"Move to private messaging",a:"Verify the person's identity through an independent official channel."},
+{w:["pay for training","training fee","pay for equipment","application fee"],p:28,t:"job",m:"Upfront fee connected to a job",a:"Verify the employer on its official website before paying any recruitment-related fee."},
+{w:["easy money","guaranteed income","no experience high pay"],p:23,t:"job",m:"Easy or guaranteed income claim",a:"Verify the employer, responsibilities, contract and compensation independently."},
+{w:["reshipping","receive packages and resend","package inspector"],p:32,t:"job",m:"Possible reshipping-job pattern",a:"Do not forward packages for an unverified employer."},
+{w:["owner is abroad","landlord abroad","cannot show the apartment","can't show the apartment"],p:30,t:"rental",m:"Property cannot be viewed",a:"Verify the property and landlord or agent before paying a deposit."},
+{w:["keys after payment","keys after deposit","keys by courier"],p:25,t:"rental",m:"Keys promised after advance payment",a:"Do not treat promised keys as proof. Verify the property independently."},
+{w:["outside the platform","pay off platform","pay outside airbnb","pay outside booking"],p:24,t:"marketplace",m:"Request to leave platform protections",a:"Keep payment and messaging on the official platform when possible."},
+{w:["verify your account","account suspended","account will be closed","unusual login","click this link"],p:18,t:"phishing",m:"Account warning or verification lure",a:"Do not use the message link. Open the official app or known website yourself."},
+{w:["delivery failed","unpaid toll","delivery fee","refund pending"],p:15,t:"phishing",m:"Common payment-link lure",a:"Check the claim directly with the official carrier or service."},
+{w:["guaranteed profit","guaranteed return","risk free investment","risk-free investment","double your money"],p:40,t:"investment",m:"Guaranteed investment return",a:"Verify the firm and investment through the relevant official regulator before depositing funds."},
+{w:["investment mentor","crypto mentor","trading mentor"],p:16,t:"investment",m:"Investment mentor or coaching claim",a:"Verify the person's identity, credentials and platform independently."},
+{w:["don't tell anyone","do not tell anyone","keep this secret"],p:25,t:"pressure",m:"Secrecy requested",a:"Ask a trusted person to review the situation before acting."},
+{w:["passport photo","id card photo","social security number","ssn"],p:20,t:"identity",m:"Sensitive identity data requested",a:"Confirm who needs the data, why, and how it will be handled before sharing it."}
 ];
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function checkIt(){
- const raw=document.getElementById('input').value.trim(); if(!raw){document.getElementById('input').focus();return}
- const text=raw.toLowerCase(); let score=0,hits=[],types=new Set();
- for(const r of RULES){const matched=r.k.filter(k=>text.includes(k));if(matched.length){score+=r.p;types.add(r.t);hits.push({...r,matched})}}
- const pressure=hits.some(h=>h.t==="pressure"), payment=hits.some(h=>h.t==="payment"), credentials=hits.some(h=>h.t==="credentials");
- if(pressure&&payment)score+=10;if(credentials&&pressure)score+=10;if(types.size>=3)score+=8;score=Math.min(score,100);
- let level="LOW",color="#00d7a7";if(score>=20){level="MEDIUM";color="#ffb020"}if(score>=45){level="HIGH";color="#ff5c70"}
- document.getElementById('risk').textContent=level+" RISK · "+score+"/100";
- document.getElementById('summary').textContent=hits.length?hits.length+" risk signal"+(hits.length===1?"":"s")+" detected across "+types.size+" categor"+(types.size===1?"y":"ies")+".":"No obvious rule-based red flags were detected. That does not mean the offer is safe.";
- const bar=document.getElementById('bar');bar.style.width=score+"%";bar.style.background=color;
- document.getElementById('tags').innerHTML=[...types].map(t=>'<span class="badge">'+esc(t)+'</span>').join('');
- if(hits.length){
-   document.getElementById('signals').innerHTML='<ul>'+hits.map(h=>'<li><b>'+esc(h.m)+'</b><br><span class="small">Matched: '+h.matched.map(esc).join(', ')+'</span></li>').join('')+'</ul>';
-   const acts=[...new Set(hits.map(h=>h.a))];
-   document.getElementById('actions').innerHTML='<ul>'+acts.slice(0,6).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>';
- } else {
-   document.getElementById('signals').innerHTML='<div class="small">Nothing obvious matched the current rule set.</div>';
-   document.getElementById('actions').innerHTML='<ul><li>Verify the person, business or property using an independent source.</li><li>Use protected payment methods with strangers.</li><li>Never share passwords or one-time security codes.</li></ul>';
- }
- document.getElementById('result').style.display='block';
- document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-function clearAll(){document.getElementById('input').value='';document.getElementById('result').style.display='none'}
+
+const TR={
+it:{
+"Gift-card payment request":"Pagamento richiesto con gift card","Do not pay a stranger with gift cards. Verify the request independently.":"Non pagare uno sconosciuto con gift card. Verifica la richiesta tramite una fonte indipendente.",
+"Crypto payment or transfer":"Pagamento o trasferimento in criptovaluta","Crypto transfers can be hard to reverse. Verify the recipient and purpose independently.":"I trasferimenti crypto possono essere difficili da annullare. Verifica in modo indipendente destinatario e motivo.",
+"Hard-to-reverse money transfer":"Trasferimento di denaro difficile da annullare","Avoid irreversible transfers until the person or organization is independently verified.":"Evita trasferimenti irreversibili finché la persona o l'organizzazione non è stata verificata in modo indipendente.",
+"Payment before verification":"Pagamento richiesto prima della verifica","Verify the property, item, service or person before sending money.":"Verifica immobile, oggetto, servizio o persona prima di inviare denaro.",
+"Urgency or time pressure":"Urgenza o pressione sul tempo","Slow down and verify the claim using an independent source.":"Non avere fretta e verifica la richiesta tramite una fonte indipendente.",
+"Password or security code requested":"Password o codice di sicurezza richiesto","Never share passwords, OTPs or 2FA codes. Open the official service yourself.":"Non condividere mai password, OTP o codici 2FA. Apri direttamente il servizio ufficiale.",
+"Crypto-wallet secret requested":"Segreto del wallet crypto richiesto","Never share a seed phrase or private key.":"Non condividere mai seed phrase o chiavi private.",
+"Move to private messaging":"Richiesta di passare a messaggistica privata","Verify the person's identity through an independent official channel.":"Verifica l'identità della persona tramite un canale ufficiale indipendente.",
+"Upfront fee connected to a job":"Pagamento anticipato collegato a un lavoro","Verify the employer on its official website before paying any recruitment-related fee.":"Verifica il datore di lavoro sul suo sito ufficiale prima di pagare qualsiasi costo legato all'assunzione.",
+"Easy or guaranteed income claim":"Guadagno facile o garantito","Verify the employer, responsibilities, contract and compensation independently.":"Verifica in modo indipendente datore di lavoro, mansioni, contratto e compenso.",
+"Possible reshipping-job pattern":"Possibile schema di lavoro di reshipping","Do not forward packages for an unverified employer.":"Non inoltrare pacchi per un datore di lavoro non verificato.",
+"Property cannot be viewed":"Immobile non visitabile","Verify the property and landlord or agent before paying a deposit.":"Verifica immobile e proprietario o agente prima di pagare un deposito.",
+"Keys promised after advance payment":"Chiavi promesse dopo il pagamento anticipato","Do not treat promised keys as proof. Verify the property independently.":"Non considerare la promessa delle chiavi come prova. Verifica l'immobile in modo indipendente.",
+"Request to leave platform protections":"Richiesta di uscire dalle protezioni della piattaforma","Keep payment and messaging on the official platform when possible.":"Quando possibile, mantieni pagamento e messaggi sulla piattaforma ufficiale.",
+"Account warning or verification lure":"Avviso account o richiesta di verifica sospetta","Do not use the message link. Open the official app or known website yourself.":"Non usare il link nel messaggio. Apri direttamente l'app ufficiale o il sito conosciuto.",
+"Common payment-link lure":"Comune esca con link di pagamento","Check the claim directly with the official carrier or service.":"Controlla la richiesta direttamente con il corriere o servizio ufficiale.",
+"Guaranteed investment return":"Rendimento d'investimento garantito","Verify the firm and investment through the relevant official regulator before depositing funds.":"Verifica società e investimento tramite l'autorità di regolamentazione competente prima di depositare fondi.",
+"Investment mentor or coaching claim":"Mentor o consulenza d'investimento","Verify the person's identity, credentials and platform independently.":"Verifica in modo indipendente identità, credenziali e piattaforma.",
+"Secrecy requested":"Richiesta di segretezza","Ask a trusted person to review the situation before acting.":"Chiedi a una persona di fiducia di esaminare la situazione prima di agire.",
+"Sensitive identity data requested":"Dati personali sensibili richiesti","Confirm who needs the data, why, and how it will be handled before sharing it.":"Conferma chi richiede i dati, perché servono e come saranno gestiti prima di condividerli."
+},
+ro:{
+"Gift-card payment request":"Plată cerută prin card cadou","Do not pay a stranger with gift cards. Verify the request independently.":"Nu plăti unui necunoscut cu carduri cadou. Verifică solicitarea dintr-o sursă independentă.",
+"Crypto payment or transfer":"Plată sau transfer în criptomonede","Crypto transfers can be hard to reverse. Verify the recipient and purpose independently.":"Transferurile crypto pot fi greu de recuperat. Verifică independent destinatarul și motivul plății.",
+"Hard-to-reverse money transfer":"Transfer de bani greu de recuperat","Avoid irreversible transfers until the person or organization is independently verified.":"Evită transferurile ireversibile până când persoana sau organizația este verificată independent.",
+"Payment before verification":"Plată cerută înainte de verificare","Verify the property, item, service or person before sending money.":"Verifică proprietatea, produsul, serviciul sau persoana înainte să trimiți bani.",
+"Urgency or time pressure":"Urgență sau presiune de timp","Slow down and verify the claim using an independent source.":"Nu te grăbi și verifică afirmația folosind o sursă independentă.",
+"Password or security code requested":"Parolă sau cod de securitate solicitat","Never share passwords, OTPs or 2FA codes. Open the official service yourself.":"Nu comunica niciodată parole, coduri OTP sau 2FA. Deschide chiar tu serviciul oficial.",
+"Crypto-wallet secret requested":"Secretul portofelului crypto solicitat","Never share a seed phrase or private key.":"Nu comunica niciodată fraza seed sau cheia privată.",
+"Move to private messaging":"Mutare către mesagerie privată","Verify the person's identity through an independent official channel.":"Verifică identitatea persoanei printr-un canal oficial independent.",
+"Upfront fee connected to a job":"Taxă în avans pentru un loc de muncă","Verify the employer on its official website before paying any recruitment-related fee.":"Verifică angajatorul pe site-ul său oficial înainte să plătești orice taxă de recrutare.",
+"Easy or guaranteed income claim":"Câștig ușor sau garantat","Verify the employer, responsibilities, contract and compensation independently.":"Verifică independent angajatorul, responsabilitățile, contractul și plata.",
+"Possible reshipping-job pattern":"Posibilă schemă de job cu retrimitere de colete","Do not forward packages for an unverified employer.":"Nu retrimite colete pentru un angajator neverificat.",
+"Property cannot be viewed":"Proprietatea nu poate fi vizionată","Verify the property and landlord or agent before paying a deposit.":"Verifică proprietatea și proprietarul sau agentul înainte să plătești un avans.",
+"Keys promised after advance payment":"Chei promise după plata în avans","Do not treat promised keys as proof. Verify the property independently.":"Nu considera promisiunea cheilor drept dovadă. Verifică proprietatea independent.",
+"Request to leave platform protections":"Cerere de a ieși din protecția platformei","Keep payment and messaging on the official platform when possible.":"Păstrează plata și mesajele pe platforma oficială atunci când este posibil.",
+"Account warning or verification lure":"Avertizare de cont sau solicitare suspectă de verificare","Do not use the message link. Open the official app or known website yourself.":"Nu folosi linkul din mesaj. Deschide chiar tu aplicația oficială sau site-ul cunoscut.",
+"Common payment-link lure":"Momeală comună cu link de plată","Check the claim directly with the official carrier or service.":"Verifică solicitarea direct la transportatorul sau serviciul oficial.",
+"Guaranteed investment return":"Randament garantat al investiției","Verify the firm and investment through the relevant official regulator before depositing funds.":"Verifică firma și investiția prin autoritatea oficială relevantă înainte să depui bani.",
+"Investment mentor or coaching claim":"Mentor sau consiliere pentru investiții","Verify the person's identity, credentials and platform independently.":"Verifică independent identitatea persoanei, acreditările și platforma.",
+"Secrecy requested":"Ți se cere să păstrezi secretul","Ask a trusted person to review the situation before acting.":"Cere unei persoane de încredere să analizeze situația înainte să acționezi.",
+"Sensitive identity data requested":"Date personale sensibile solicitate","Confirm who needs the data, why, and how it will be handled before sharing it.":"Confirmă cine solicită datele, de ce sunt necesare și cum vor fi gestionate înainte să le trimiți."
+}};
+function tr(x){return lang==="en"?x:(TR[lang][x]||x)}
+
+const DEMOS={job:"URGENT! Easy money. You are hired without an interview. Pay the training fee today and contact the recruiter on Telegram.",rental:"The owner is abroad and cannot show the apartment. Send the deposit today in Bitcoin and the keys will arrive after payment.",phishing:"URGENT: Your account is suspended. Click this link and send your verification code immediately.",investment:"Guaranteed profit and risk-free investment. Send crypto today and double your money."};
+let lang="en",last="";
+const $=id=>document.getElementById(id);
+function setLang(l){lang=l;document.documentElement.lang=l;document.querySelectorAll("[data-i]").forEach(e=>e.innerHTML=UI[l][e.dataset.i]);$("input").placeholder=UI[l].placeholder;$("check").textContent=UI[l].check;$("clear").textContent=UI[l].clear;document.querySelectorAll(".lang").forEach(b=>b.classList.toggle("active",b.dataset.lang===l));document.querySelectorAll("[data-demo-label]").forEach(e=>e.textContent=UI[l][e.dataset.demoLabel]);if($("result").style.display==="block")check()}
+document.querySelectorAll(".lang").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+document.querySelectorAll(".demo").forEach(b=>b.onclick=()=>{$("input").value=DEMOS[b.dataset.demo];check()});
+function check(){let s=$("input").value.trim();if(!s){$("input").focus();return}let x=s.toLowerCase(),hits=[],score=0,tags=new Set();RULES.forEach(r=>{let m=r.w.filter(w=>x.includes(w));if(m.length){hits.push({...r,m});score+=r.p;tags.add(r.t)}});if(tags.has("pressure")&&(tags.has("payment")||tags.has("credentials")))score+=10;if(tags.size>=4)score+=8;score=Math.min(100,score);let level=score>=50?"high":score>=20?"medium":"low";let col=level==="high"?"var(--red)":level==="medium"?"var(--amber)":"var(--green)";$("risk").textContent=UI[lang][level]+" · "+score+"/100";$("summary").textContent=hits.length?UI[lang].detected(hits.length):UI[lang].none;$("bar").style.width=score+"%";$("bar").style.background=col;$("tags").innerHTML=[...tags].map(t=>`<span class="tag">${t}</span>`).join("");$("signalList").innerHTML=hits.length?"<ul>"+hits.map(h=>`<li><b>${tr(h.m)}</b><br><span class="match">${UI[lang].matched}: ${h.m.join(", ")}</span></li>`).join("")+"</ul>":'<span class="match">No obvious rule matches.</span>';let acts=[...new Set(hits.map(h=>tr(h.a)))];$("nextList").innerHTML="<ul>"+(acts.length?acts:["Verify the person, company, property or offer using an independent source.","Never share passwords or one-time security codes."]).map(a=>`<li>${a}</li>`).join("")+"</ul>";last=`ISITLEGIT? V4\nScore: ${score}/100\n\nSignals:\n${hits.map(h=>"- "+tr(h.m)).join("\n")||"- No obvious rule matches"}\n\nThis is a risk-screening result, not proof of fraud or safety.`;$("result").style.display="block";$("result").scrollIntoView({behavior:"smooth",block:"nearest"})}
+$("check").onclick=check;$("clear").onclick=()=>{$("input").value="";$("result").style.display="none";last="";$("input").focus()};
+$("copy").onclick=async()=>{if(!last)return;try{await navigator.clipboard.writeText(last)}catch(e){let t=document.createElement("textarea");t.value=last;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()}$("toast").textContent=UI[lang].copied;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",1300)};
+setLang("en");
 </script>
 </body></html>
