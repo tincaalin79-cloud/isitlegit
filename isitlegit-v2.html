@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ISITLEGIT? V2</title>
+<style>
+body{margin:0;background:#07090d;color:#f5f7fb;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:22px}.logo{font-weight:900;font-size:22px}.logo span{color:#7c5cff}
+.hero{text-align:center;padding:40px 0}.eyebrow{color:#b7aaff;font-weight:800;font-size:12px;letter-spacing:.13em}
+h1{font-size:clamp(44px,8vw,78px);line-height:.95;letter-spacing:-.05em;margin:16px 0}
+.sub{color:#8d96a6;font-size:18px;line-height:1.5}.box{margin:28px auto;background:#10141c;border:1px solid #222938;border-radius:22px;padding:16px;max-width:760px}
+textarea{width:100%;min-height:170px;background:#0a0d13;color:#f5f7fb;border:1px solid #2b3241;border-radius:15px;padding:16px;font:inherit;box-sizing:border-box}
+.row{display:flex;gap:10px;margin-top:12px}.btn{padding:14px 18px;border:0;border-radius:13px;font-weight:800;font-size:15px}.primary{background:#7c5cff;color:white;flex:1}.secondary{background:#171c26;color:#fff;border:1px solid #222938}
+.result{display:none;text-align:left;border-top:1px solid #222938;margin-top:18px;padding-top:18px}.risk{font-size:24px;font-weight:900}.note{color:#8d96a6;margin-top:4px;line-height:1.45}
+.meter{height:10px;background:#171c26;border-radius:99px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:#0b0f16;border:1px solid #222938;border-radius:15px;padding:15px}
+.card h3{margin:0 0 10px}.card ul{padding-left:18px}.card li{margin:8px 0;line-height:1.4}.small{color:#8d96a6;font-size:13px}
+.badge{display:inline-block;border:1px solid #222938;border-radius:99px;padding:5px 8px;margin:3px;font-size:11px}
+footer{text-align:center;color:#70798a;font-size:12px;padding:30px 0}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="logo">ISIT<span>LEGIT</span>?</div>
+<section class="hero">
+<div class="eyebrow">DON'T GET SCAMMED</div>
+<h1>Before you pay.<br>Before you click.</h1>
+<p class="sub">Paste a suspicious message, rental, job offer, seller text or website copy. V2 screens for common scam patterns and explains what to verify.</p>
+<div class="box">
+<textarea id="input" placeholder="Paste suspicious text here..."></textarea>
+<div class="row"><button class="btn primary" onclick="checkIt()">Check it →</button><button class="btn secondary" onclick="clearAll()">Clear</button></div>
+<div id="result" class="result">
+<div id="risk" class="risk"></div><div id="summary" class="note"></div>
+<div class="meter"><div id="bar" class="bar"></div></div>
+<div id="tags"></div>
+<div class="grid">
+<div class="card"><h3>Signals detected</h3><div id="signals"></div></div>
+<div class="card"><h3>What to do next</h3><div id="actions"></div></div>
+</div>
+<div class="small" style="margin-top:12px">This is a rule-based screening tool, not proof that something is fraudulent or safe. Verify important claims independently.</div>
+</div>
+</div>
+</section>
+<footer>ISITLEGIT? — V2 local prototype · No API · No cost</footer>
+</div>
+<script>
+const RULES=[
+{k:["gift card","steam card","apple gift card","google play card"],p:30,t:"payment",m:"Gift-card payment request",a:"Do not pay with gift cards. Legitimate sellers and employers rarely require them."},
+{k:["bitcoin","crypto","cryptocurrency","usdt","ethereum"],p:20,t:"payment",m:"Crypto payment request",a:"Treat irreversible crypto payments with extra caution. Verify the counterparty independently."},
+{k:["wire transfer","western union","moneygram"],p:22,t:"payment",m:"Hard-to-reverse transfer",a:"Avoid irreversible transfers until identity and legitimacy are independently confirmed."},
+{k:["pay first","payment first","send payment before"],p:22,t:"payment",m:"Payment before verification",a:"Do not pay before you can verify the item, person, property or service."},
+{k:["deposit today","send the deposit","deposit now"],p:18,t:"rental",m:"Deposit pressure",a:"Verify the property, landlord/agent and tenancy documents before sending a deposit."},
+{k:["urgent","act now","immediately","today only","limited time","last chance"],p:10,t:"pressure",m:"Urgency or time pressure",a:"Slow down. Urgency is often used to reduce your verification time."},
+{k:["telegram","signal app"],p:8,t:"contact",m:"Move to private messaging",a:"Keep communication on the original platform when possible."},
+{k:["whatsapp"],p:5,t:"contact",m:"Off-platform messaging",a:"Verify the person or company independently before paying or sharing documents."},
+{k:["password","verification code","security code","otp","one-time password"],p:35,t:"credentials",m:"Credentials or security code requested",a:"Never share passwords or one-time security codes. Use the service's official app/site."},
+{k:["seed phrase","recovery phrase","12 words","24 words"],p:50,t:"credentials",m:"Crypto recovery phrase requested",a:"Never share a wallet seed or recovery phrase."},
+{k:["guaranteed profit","guaranteed return","risk free investment","double your money"],p:35,t:"investment",m:"Guaranteed investment returns",a:"Treat guaranteed or risk-free returns as a major warning sign."},
+{k:["easy money","earn 500 a day","earn $500 a day"],p:22,t:"job",m:"Unrealistic income promise",a:"Check the employer, contract and how compensation actually works."},
+{k:["pay for training","training fee","pay for equipment"],p:25,t:"job",m:"Upfront fee for a job",a:"Legitimate employers generally do not require candidates to pay them to get hired."},
+{k:["landlord abroad","owner is abroad","can't show the apartment","cannot show the apartment"],p:28,t:"rental",m:"Property cannot be viewed",a:"Do not send a deposit before independently verifying the property and responsible party."},
+{k:["friends and family","paypal friends"],p:18,t:"marketplace",m:"Buyer protection may be bypassed",a:"Use protected payment methods for purchases from strangers."},
+{k:["outside the platform","pay off platform"],p:18,t:"marketplace",m:"Platform protections may be bypassed",a:"Stay on the marketplace's official messaging and payment system."},
+{k:["click this link","verify your account","account suspended","account will be closed"],p:16,t:"phishing",m:"Phishing-style account pressure",a:"Do not use links in the message. Open the official app or type the official address yourself."},
+{k:["you won","claim your prize"],p:18,t:"prize",m:"Unexpected prize claim",a:"Do not pay fees or provide sensitive data to claim an unexpected prize."}
+];
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function checkIt(){
+ const raw=document.getElementById('input').value.trim(); if(!raw){document.getElementById('input').focus();return}
+ const text=raw.toLowerCase(); let score=0,hits=[],types=new Set();
+ for(const r of RULES){const matched=r.k.filter(k=>text.includes(k));if(matched.length){score+=r.p;types.add(r.t);hits.push({...r,matched})}}
+ const pressure=hits.some(h=>h.t==="pressure"), payment=hits.some(h=>h.t==="payment"), credentials=hits.some(h=>h.t==="credentials");
+ if(pressure&&payment)score+=10;if(credentials&&pressure)score+=10;if(types.size>=3)score+=8;score=Math.min(score,100);
+ let level="LOW",color="#00d7a7";if(score>=20){level="MEDIUM";color="#ffb020"}if(score>=45){level="HIGH";color="#ff5c70"}
+ document.getElementById('risk').textContent=level+" RISK · "+score+"/100";
+ document.getElementById('summary').textContent=hits.length?hits.length+" risk signal"+(hits.length===1?"":"s")+" detected across "+types.size+" categor"+(types.size===1?"y":"ies")+".":"No obvious rule-based red flags were detected. That does not mean the offer is safe.";
+ const bar=document.getElementById('bar');bar.style.width=score+"%";bar.style.background=color;
+ document.getElementById('tags').innerHTML=[...types].map(t=>'<span class="badge">'+esc(t)+'</span>').join('');
+ if(hits.length){
+   document.getElementById('signals').innerHTML='<ul>'+hits.map(h=>'<li><b>'+esc(h.m)+'</b><br><span class="small">Matched: '+h.matched.map(esc).join(', ')+'</span></li>').join('')+'</ul>';
+   const acts=[...new Set(hits.map(h=>h.a))];
+   document.getElementById('actions').innerHTML='<ul>'+acts.slice(0,6).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>';
+ } else {
+   document.getElementById('signals').innerHTML='<div class="small">Nothing obvious matched the current rule set.</div>';
+   document.getElementById('actions').innerHTML='<ul><li>Verify the person, business or property using an independent source.</li><li>Use protected payment methods with strangers.</li><li>Never share passwords or one-time security codes.</li></ul>';
+ }
+ document.getElementById('result').style.display='block';
+ document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function clearAll(){document.getElementById('input').value='';document.getElementById('result').style.display='none'}
+</script>
+</body></html>
