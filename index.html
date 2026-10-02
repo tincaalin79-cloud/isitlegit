@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Free browser-based risk signal checker for suspicious messages, jobs, rentals, shops and investments.">
 <meta name="theme-color" content="#080b10">
-<title>ISITLEGIT? V4 — Risk Signal Checker</title>
+<title>Free Scam Checker - Check Suspicious Messages, Jobs &amp; Rentals | ISITLEGIT?</title>
+<meta name="description" content="Free scam checker to analyze suspicious messages, job offers, rental listings, phishing attempts and investment offers. Spot risk signals before you pay, click or trust.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tincaalin79-cloud.github.io/isitlegit/">
 <style>
 :root{--bg:#070a0f;--panel:#10151e;--panel2:#0b1017;--line:#273040;--txt:#f5f7fb;--muted:#929bad;--purple:#7957ff;--red:#ff5b70;--amber:#ffb020;--green:#19d3a2}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 50% -12%,#211a3d 0,#070a0f 42%);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -44,11 +46,29 @@ footer{text-align:center;border-top:1px solid var(--line);padding:24px;color:#72
 </div></div>
 </section>
 <section class="features"><div class="feature"><b>0 €</b><span data-i="free"></span></div><div class="feature"><b>Local</b><span data-i="local"></span></div><div class="feature"><b>V4</b><span data-i="engine"></span></div></section>
-<footer>ISITLEGIT? · V4 prototype · Rule-based screening · No API</footer>
+<section class="seo-content">
+  <h2>Free Scam & Risk Signal Checker</h2>
+  <p>ISITLEGIT? helps you spot warning signs in suspicious messages, job offers, rental listings, phishing attempts, online shopping offers and investment opportunities.</p>
+
+  <h3>Job Scam Checker</h3>
+  <p>Check suspicious job offers for warning signs such as upfront payments, unrealistic salaries, pressure tactics, private messaging and requests for personal information.</p>
+
+  <h3>Rental Scam Checker</h3>
+  <p>Analyze rental messages and listings for signals such as urgent deposits, cryptocurrency payments, unavailable landlords and pressure to pay before viewing the property.</p>
+
+  <h3>Phishing Message Checker</h3>
+  <p>Paste a suspicious email, SMS or message to identify common phishing signals including urgent requests, verification codes, passwords and suspicious payment instructions.</p>
+
+  <h3>Investment Scam Checker</h3>
+  <p>Check investment and crypto offers for warning signs such as guaranteed profits, unrealistic returns, urgency and requests to send cryptocurrency.</p>
+
+  <p><strong>Important:</strong> ISITLEGIT? provides risk-signal screening, not a guarantee that something is safe or fraudulent. Always verify important information independently.</p>
+</section>
+<footer>ISITLEGIT? · V5 · Rule-based screening · No API</footer>
 </div><div class="toast" id="toast"></div>
 <script>
 const UI={
-en:{eyebrow:"DON'T GET SCAMMED",title:"Before you pay.<br>Before you click.",lead:"Paste a suspicious message, rental, job offer, seller text or website copy. V4 screens for common risk signals and explains what to verify.",placeholder:"Paste suspicious text here…",check:"Check it →",clear:"Clear",signals:"Signals detected",next:"What to verify next",copy:"Copy report",note:"This is a risk-screening tool, not a guarantee. A low score does not prove something is safe, and a high score is not proof of fraud.",free:"free to use",local:"runs in your browser",engine:"expanded risk rules",low:"LOW RISK SIGNALS",medium:"MEDIUM RISK SIGNALS",high:"HIGH RISK SIGNALS",none:"No obvious signals matched the current rules. This does not prove the situation is safe.",detected:n=>`${n} risk signal${n===1?"":"s"} detected.`,copied:"Report copied",matched:"Matched",job:"Job",rental:"Rental",phishing:"Phishing",investment:"Investment"},
+en:{eyebrow:"DON'T GET SCAMMED",title:"Before you pay.<br>Before you click.",lead:"Paste a suspicious message, rental, job offer, seller text or website copy. V5 screens for common risk signals and explains what to verify.",placeholder:"Paste suspicious text here…",check:"Check it →",clear:"Clear",signals:"Signals detected",next:"What to verify next",copy:"Copy report",note:"This is a risk-screening tool, not a guarantee. A low score does not prove something is safe, and a high score is not proof of fraud.",free:"free to use",local:"runs in your browser",engine:"expanded risk rules",low:"LOW RISK SIGNALS",medium:"MEDIUM RISK SIGNALS",high:"HIGH RISK SIGNALS",none:"No obvious signals matched the current rules. This does not prove the situation is safe.",detected:n=>`${n} risk signal${n===1?"":"s"} detected.`,copied:"Report copied",matched:"Matched",job:"Job",rental:"Rental",phishing:"Phishing",investment:"Investment"},
 it:{eyebrow:"NON FARTI TRUFFARE",title:"Prima di pagare.<br>Prima di cliccare.",lead:"Incolla un messaggio, affitto, offerta di lavoro, testo di un venditore o sito sospetto. V4 cerca segnali di rischio comuni e spiega cosa verificare.",placeholder:"Incolla qui il testo sospetto…",check:"Controlla →",clear:"Cancella",signals:"Segnali rilevati",next:"Cosa verificare",copy:"Copia rapporto",note:"È uno strumento di screening del rischio, non una garanzia. Un punteggio basso non prova che sia sicuro e uno alto non prova una truffa.",free:"gratis",local:"funziona nel browser",engine:"regole di rischio ampliate",low:"SEGNALI DI RISCHIO BASSI",medium:"SEGNALI DI RISCHIO MEDI",high:"SEGNALI DI RISCHIO ALTI",none:"Nessun segnale evidente corrisponde alle regole attuali. Questo non prova che sia sicuro.",detected:n=>`${n} segnali di rischio rilevati.`,copied:"Rapporto copiato",matched:"Corrispondenza",job:"Lavoro",rental:"Affitto",phishing:"Phishing",investment:"Investimento"},
 ro:{eyebrow:"NU TE LĂSA PĂCĂLIT",title:"Înainte să plătești.<br>Înainte să dai click.",lead:"Lipește un mesaj, anunț de chirie, ofertă de muncă, text de la un vânzător sau site suspect. V4 caută semnale comune de risc și îți spune ce să verifici.",placeholder:"Lipește aici textul suspect…",check:"Verifică →",clear:"Șterge",signals:"Semnale detectate",next:"Ce să verifici",copy:"Copiază raportul",note:"Acesta este un instrument de evaluare a semnalelor de risc, nu o garanție. Un scor mic nu dovedește că este sigur, iar unul mare nu dovedește o fraudă.",free:"gratuit",local:"rulează în browser",engine:"reguli de risc extinse",low:"SEMNALE DE RISC SCĂZUTE",medium:"SEMNALE DE RISC MEDII",high:"SEMNALE DE RISC RIDICATE",none:"Niciun semnal evident nu corespunde regulilor actuale. Asta nu dovedește că situația este sigură.",detected:n=>`${n} semnale de risc detectate.`,copied:"Raport copiat",matched:"Potrivire",job:"Job",rental:"Chirie",phishing:"Phishing",investment:"Investiție"}};
 const RULES=[
